@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <com.solveda.watsonchatbot.messages.MessagesList
+        android:id="@+id/messagesList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/input" />
+
+    <!--app:incomingTextColor="#ff0000"
+    app:incomingAvatarIcon="@drawable/ic_play"
+        app:incomingPlayBtn="@drawable/ic_play_custom"
+    app:outcomingTextColor="#00ff00"
+    app:incomingDefaultBubbleColor="#00ff00"
+    app:outcomingDefaultBubbleColor="#ff0000"
+    app:incomingTextSize="20dp"
+    app:outcomingTextSize="20dp"
+    app:incomingTimeTextFont="@font/aclonica"
+-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/input"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/gray_light"/>
+
+    <com.solveda.watsonchatbot.messages.MessageInput
+        android:id="@+id/input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:inputHint="@string/hint_enter_a_message"
+        app:attachmentButtonIcon="@drawable/ic_mic"
+        app:attachmentButtonDefaultIconColor="#ff0000"
+        app:inputButtonDefaultIconColor="#ff0000"
+        app:showAttachmentButton="true"/>
+
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SolvedaChatbot</string>
+
+    <string name="hint_enter_a_message">Type a message…</string>
+
+    <string-array name="view_types_dialog">
+        <item name="image">Image (default)</item>
+        <item name="voice">Voice message (custom)</item>
+    </string-array>
+
+    <string name="loading_video">Loading video…</string>
+    <string name="action_settings">settings</string>
+</resources>
