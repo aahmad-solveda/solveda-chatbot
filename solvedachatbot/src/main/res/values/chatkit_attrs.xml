@@ -110,6 +110,9 @@
             <flag name="italic" value="2"/>
         </attr>-->
 
+        <attr name="likeButtonColor" format="color|reference"/>
+        <attr name="dislikeButtonColor" format="color|reference"/>
+
         <attr name="outcomingBubbleDrawable" format="reference"/>
         <attr name="outcomingDefaultBubbleColor" format="color|reference"/>
         <attr name="outcomingDefaultBubblePressedColor" format="color|reference"/>

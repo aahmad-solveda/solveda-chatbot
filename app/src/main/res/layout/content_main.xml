@@ -12,7 +12,9 @@
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/input" />
+        android:layout_above="@+id/input"
+        app:dislikeButtonColor="#f0f"
+        app:likeButtonColor="@color/colorPrimary"/>
 
     <!--app:incomingTextColor="#ff0000"
     app:incomingAvatarIcon="@drawable/ic_play"

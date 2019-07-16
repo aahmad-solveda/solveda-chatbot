@@ -115,5 +115,7 @@ public class MessagesList extends RecyclerView {
     public interface ItemClick{
         void onImage(String imageUrl);
         void onVideo(String video, String thumbUrl);
+        void onLikeClick(Object data);
+        void onDislikeClick(Object data);
     }
 }

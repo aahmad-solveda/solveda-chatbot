@@ -46,6 +46,9 @@ public class MessagesListStyle extends Style {
     private  int incomingAvatar;
     private int playButton;
 
+    private int likeButtonColor;
+    private int disLikeButtonColor;
+
     private int incomingBubbleDrawable;
     private int incomingDefaultBubbleColor;
     private int incomingDefaultBubblePressedColor;
@@ -113,6 +116,12 @@ public class MessagesListStyle extends Style {
     static MessagesListStyle parse(Context context, AttributeSet attrs) {
         MessagesListStyle style = new MessagesListStyle(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MessagesList);
+
+        style.likeButtonColor = typedArray.getColor(R.styleable.MessagesList_likeButtonColor,
+                style.getColor(R.color.blue));
+
+        style.disLikeButtonColor = typedArray.getColor(R.styleable.MessagesList_dislikeButtonColor,
+                style.getColor(R.color.blue));
 
         style.textAutoLinkMask = typedArray.getInt(R.styleable.MessagesList_textAutoLink, 0);
         style.incomingTextLinkColor = typedArray.getColor(R.styleable.MessagesList_incomingTextLinkColor,
@@ -458,5 +467,13 @@ public class MessagesListStyle extends Style {
 
     public int getPlayButton() {
         return playButton;
+    }
+
+    public int getLikeButtonColor() {
+        return likeButtonColor;
+    }
+
+    public int getDisLikeButtonColor() {
+        return disLikeButtonColor;
     }
 }

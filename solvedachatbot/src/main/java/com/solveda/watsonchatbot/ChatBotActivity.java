@@ -199,4 +199,14 @@ public class ChatBotActivity extends AppCompatActivity implements
         intent.putExtra("url","https://i.ytimg.com/vi/RHLknisJ-Sg/maxresdefault.jpg");
         startActivity(intent);
     }
+
+    @Override
+    public void onLikeClick(Object data) {
+        Toast.makeText(this,"Like Click",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDislikeClick(Object data) {
+        Toast.makeText(this,"Dislike Click",Toast.LENGTH_LONG).show();
+    }
 }

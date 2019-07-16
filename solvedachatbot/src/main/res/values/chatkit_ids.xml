@@ -8,6 +8,10 @@
     <item name="imageOverlay" type="id" />
     <item name="imagePlay" type="id" />
 
+    <item name="btn_like" type="id"/>
+    <item name="btn_dislike" type="id"/>
+    <item name="container_like_dislike" type="id"/>
+
     <!-- MESSAGE INPUT -->
     <item name="attachmentButton" type="id" />
     <item name="messageSendButton" type="id" />

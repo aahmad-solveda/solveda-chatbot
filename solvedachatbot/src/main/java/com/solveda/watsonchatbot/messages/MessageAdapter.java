@@ -97,7 +97,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
         {
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chatkit_item_incoming_text_message, viewGroup, false);
             IncomingTextMessageViewHolder holder =new IncomingTextMessageViewHolder(v);
-            holder.applyStyle(messagesListStyle);
+            holder.applyStyle(messagesListStyle,itemClick);
             return holder;
         }
         else if(i==TYPE_IMAGE_INCOMING)
@@ -216,7 +216,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
 
     public static class IncomingTextMessageViewHolder extends RecyclerView.ViewHolder
     {
-        ImageView messageUserAvatar;
+        ImageView messageUserAvatar,btnLike,btnDislike;
         TextView messageText,messageTime;
         ViewGroup bubble;
         public IncomingTextMessageViewHolder(@NonNull View itemView) {
@@ -225,6 +225,8 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             messageText = itemView.findViewById(R.id.messageText);
             messageTime = itemView.findViewById(R.id.messageTime);
             bubble = itemView.findViewById(R.id.bubble);
+            btnLike = itemView.findViewById(R.id.btn_like);
+            btnDislike = itemView.findViewById(R.id.btn_dislike);
         }
         public void onBindData(IMessageData data)
         {
@@ -235,7 +237,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
           /*  if(bubble!=null)
                 bubble.setSelected(true);*/
         }
-        public void applyStyle(MessagesListStyle style)
+        public void applyStyle(MessagesListStyle style, final MessagesList.ItemClick itemClick)
         {
             if (bubble != null) {
                 bubble.setPadding(style.getIncomingDefaultBubblePaddingLeft(),
@@ -265,6 +267,32 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             {
                 messageUserAvatar.setImageResource(style.getIncomingAvatar());
             }
+            if(btnLike!=null)
+            {
+                btnLike.setColorFilter(style.getLikeButtonColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+                btnLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                        {
+                            itemClick.onLikeClick(v.getTag());
+                        }
+                    }
+                });
+            }
+            if(btnDislike!=null)
+            {
+                btnDislike.setColorFilter(style.getDisLikeButtonColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+                btnDislike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                        {
+                            itemClick.onDislikeClick(v.getTag());
+                        }
+                    }
+                });
+            }
             
             
         }
@@ -292,7 +320,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
 
     public static class IncomingImageMessageViewHolder extends RecyclerView.ViewHolder
     {
-        ImageView messageUserAvatar,image;
+        ImageView messageUserAvatar,image,btnLike,btnDislike;
         TextView messageText,messageTime;
         View  imageOverlay;
         ViewGroup bubble;
@@ -304,6 +332,8 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             messageTime = itemView.findViewById(R.id.messageTime);
             imageOverlay = itemView.findViewById(R.id.imageOverlay);
             bubble = itemView.findViewById(R.id.bubble);
+            btnLike = itemView.findViewById(R.id.btn_like);
+            btnDislike = itemView.findViewById(R.id.btn_dislike);
         }
         public void onBindData(IMessageData data)
         {
@@ -366,7 +396,32 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             {
                 messageUserAvatar.setImageResource(style.getIncomingAvatar());
             }
-
+            if(btnLike!=null)
+            {
+                btnLike.setColorFilter(style.getLikeButtonColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+                btnLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                        {
+                            itemClick.onLikeClick(v.getTag());
+                        }
+                    }
+                });
+            }
+            if(btnDislike!=null)
+            {
+                btnDislike.setColorFilter(style.getDisLikeButtonColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+                btnDislike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                        {
+                            itemClick.onDislikeClick(v.getTag());
+                        }
+                    }
+                });
+            }
 
         }
 
@@ -390,7 +445,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
 
     public static class IncomingVideoMessageViewHolder extends RecyclerView.ViewHolder
     {
-        ImageView messageUserAvatar,image,imagePlay;
+        ImageView messageUserAvatar,image,imagePlay,btnLike,btnDislike;
         TextView messageText,messageTime;
         View  imageOverlay;
         ViewGroup bubble;
@@ -403,6 +458,8 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             imageOverlay = itemView.findViewById(R.id.imageOverlay);
             bubble = itemView.findViewById(R.id.bubble);
             imagePlay = itemView.findViewById(R.id.imagePlay);
+            btnLike = itemView.findViewById(R.id.btn_like);
+            btnDislike = itemView.findViewById(R.id.btn_dislike);
         }
         public void onBindData(IMessageData data)
         {
@@ -470,7 +527,33 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             {
                 imagePlay.setImageResource(style.getPlayButton());
             }
-
+            if(btnLike!=null)
+            {
+                btnLike.setColorFilter(style.getLikeButtonColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+                btnLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                        {
+                            itemClick.onLikeClick(v.getTag());
+                        }
+                    }
+                });
+            }
+            if(btnDislike!=null)
+            {
+                btnDislike.setColorFilter(style.getDisLikeButtonColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+                btnDislike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                        {
+                            itemClick.onDislikeClick(v.getTag());
+                        }
+                    }
+                });
+            }
+            //zfgsdfg
 
         }
 
