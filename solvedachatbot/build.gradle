@@ -39,7 +39,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //Picasso
-    implementation "com.squareup.picasso:picasso:$picassoVersion"
+    //implementation "com.squareup.picasso:picasso:$picassoVersion"
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
 
     //ImageViews
     implementation "de.hdodenhof:circleimageview:$circleImageViewVersion"

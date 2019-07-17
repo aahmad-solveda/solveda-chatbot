@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.solveda.watsonchatbot.R;
 import com.solveda.watsonchatbot.utils.RoundedImageView;
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -342,7 +344,8 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             if(messageTime!=null)
                 messageTime.setText(data.getDateTime());
             if(image!=null) {
-                Picasso.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
+                //Picasso.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
+                Glide.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
                 image.setTag("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
             }
                // Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
@@ -468,7 +471,11 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             if(messageTime!=null)
                 messageTime.setText(data.getDateTime());
             if(image!=null) {
-                Picasso.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
+                //Picasso.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
+               // Picasso.with(image.getContext()).load("http://techslides.com/demos/sample-videos/small.mp4").into(image);
+                long thumb = getLayoutPosition()*1000;
+                RequestOptions options = new RequestOptions().frame(thumb);
+                Glide.with(image.getContext()).load("http://techslides.com/demos/sample-videos/small.mp4").apply(options).into(image);
                 image.setTag(R.string.app_name,"https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
                 image.setTag(R.string.action_settings,"https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
             }
@@ -667,7 +674,8 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             if(messageTime!=null)
                 messageTime.setText(data.getDateTime());
             if(image!=null) {
-                Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
+                //Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
+                Glide.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png");
                 image.setTag("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png");
             }
           /*  if(bubble!=null)
