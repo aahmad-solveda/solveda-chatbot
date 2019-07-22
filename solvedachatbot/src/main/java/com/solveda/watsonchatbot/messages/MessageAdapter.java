@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.solveda.watsonchatbot.R;
+import com.solveda.watsonchatbot.controls.waitingdots.DotsTextView;
 import com.solveda.watsonchatbot.utils.RoundedImageView;
 //import com.squareup.picasso.Picasso;
 
@@ -33,6 +34,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
     private static final int TYPE_IMAGE_OUTGOING=4;
     private static final int TYPE_VIDEO_INCOMING=5;
     private static final int TYPE_VIDEO_OUTGOING=6;
+    private static final int TYPE_DOTS_VIEW=7;
 
     protected List<Object> items;
     private RecyclerView.LayoutManager layoutManager;
@@ -46,6 +48,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
     public MessageAdapter()
     {
         items =new ArrayList<>();
+
     }
 
     @Override
@@ -54,7 +57,11 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
         return getViewType(items.get(position));
     }
     protected int getViewType(Object item) {
-        if(item instanceof MessageData)
+        if(item==null)
+        {
+            return TYPE_DOTS_VIEW;
+        }
+        else if(item instanceof MessageData)
         {
             MessageData data = (MessageData)item;
             if(data.isBotMessage())
@@ -137,6 +144,16 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             holder.applyStyle(messagesListStyle,itemClick);
             return holder;
         }
+        else if(i==TYPE_DOTS_VIEW)
+        {
+
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_waiting_dots, null);
+            TypingDotsHolder dotsHolder = new TypingDotsHolder(view);
+            DotsTextView dots = dotsHolder.dotsTextView;
+            dots.start();
+            dotsHolder.applyStyle(messagesListStyle);
+            return dotsHolder;
+        }
         else
         {
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chatkit_item_outcoming_text_message, viewGroup, false);
@@ -204,6 +221,19 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
         notifyItemRangeInserted(0,1);
         if (layoutManager != null && scroll) {
             layoutManager.scrollToPosition(0);
+        }
+    }
+    public void removeDots()
+    {
+        //items.remove(0);
+        //notifyItemRemoved(0);
+        for(int i=0;i<items.size();i++)
+        {
+            if(items.get(i)==null) {
+                items.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
         }
     }
 
@@ -744,6 +774,37 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             });
         }
 
+    }
+
+
+    public static class TypingDotsHolder extends RecyclerView.ViewHolder
+    {
+        public DotsTextView dotsTextView;
+        public ImageView messageUserAvatar;
+        public ViewGroup loadContainer;
+        public TypingDotsHolder(@NonNull View itemView) {
+            super(itemView);
+            dotsTextView = itemView.findViewById(R.id.dots);
+            messageUserAvatar = itemView.findViewById(R.id.messageUserAvatar);
+            loadContainer = itemView.findViewById(R.id.loadContainer);
+        }
+        public void start()
+        {
+            dotsTextView.start();
+        }
+        public void applyStyle(MessagesListStyle style)
+        {
+            if(loadContainer!=null)
+                ViewCompat.setBackground(loadContainer, style.getIncomingBubbleDrawable());
+            if(dotsTextView!=null)
+            {
+                dotsTextView.setTextColor(style.getIncomingTextColor());
+            }
+            if(messageUserAvatar!=null && style.getIncomingAvatar()!=-1)
+            {
+                messageUserAvatar.setImageResource(style.getIncomingAvatar());
+            }
+        }
     }
 
 

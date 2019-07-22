@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/input"
-        app:dislikeButtonColor="#f0f"
+        app:dislikeButtonColor="#6B6B6B"
+        app:textAutoLink="all"
         app:likeButtonColor="@color/colorPrimary"/>
 
     <!--app:incomingTextColor="#ff0000"
@@ -26,6 +27,22 @@
     app:outcomingTextSize="20dp"
     app:incomingTimeTextFont="@font/aclonica"
 -->
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnScrollToEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/messagesList"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:alpha="0.85"
+        android:onClick="scrollToEnd"
+        app:backgroundTint="@color/white"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_scroll_to_end" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

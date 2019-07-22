@@ -1,5 +1,7 @@
 package com.solveda.chatbotsample;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.solveda.watsonchatbot.ChatBotActivity;
 import com.solveda.watsonchatbot.messages.MessageData;
@@ -26,8 +29,21 @@ public class MainActivity extends ChatBotActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        try
+        {
+            ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(),     PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            String myApiKey = bundle.getString("watson_url");
+            //Toast.makeText(this,myApiKey,Toast.LENGTH_LONG).show();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
         this.messagesList = (MessagesList) findViewById(R.id.messagesList);
         this.input = (MessageInput) findViewById(R.id.input);
+        this.btnScrollToEnd = (FloatingActionButton)findViewById(R.id.btnScrollToEnd);
         init();
 
        /* FloatingActionButton fab = findViewById(R.id.fab);

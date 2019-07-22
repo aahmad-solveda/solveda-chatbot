@@ -31,7 +31,7 @@ import com.solveda.watsonchatbot.commons.models.IMessage;
  */
 public class MessagesList extends RecyclerView {
     private MessagesListStyle messagesListStyle;
-
+    LinearLayoutManager layoutManager;
     public MessagesList(Context context) {
         super(context);
     }
@@ -48,7 +48,7 @@ public class MessagesList extends RecyclerView {
 
     /**
      * Don't use this method for setting your adapter, otherwise exception will by thrown.
-     * Call {@link #setAdapter(MessagesListAdapter)} instead.
+     *
      */
     @Override
     public void setAdapter(Adapter adapter) {
@@ -61,7 +61,7 @@ public class MessagesList extends RecyclerView {
         SimpleItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setSupportsChangeAnimations(false);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+        layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, reverseLayout);
 
         setItemAnimator(itemAnimator);
@@ -73,6 +73,11 @@ public class MessagesList extends RecyclerView {
         super.setAdapter(adapter);
     }
 
+    @Nullable
+    @Override
+    public LinearLayoutManager getLayoutManager() {
+        return layoutManager;
+    }
     /**
      * Sets adapter for MessagesList
      *

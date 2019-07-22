@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data android:name="watson_url" android:value="https://www.google.co.in" />
     </application>
 
 </manifest>

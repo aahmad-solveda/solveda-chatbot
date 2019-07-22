@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/background_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp">
+
+    <com.solveda.watsonchatbot.utils.ShapeImageView
+        android:id="@id/messageUserAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/chatkit_bot"
+        android:layout_marginBottom="24dp"
+        android:layout_marginRight="8dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/loadContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/messageUserAvatar"
+        android:layout_toRightOf="@id/messageUserAvatar"
+
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_layout"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="4dp">
+
+        <com.solveda.watsonchatbot.controls.waitingdots.DotsTextView
+            android:id="@+id/dots"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="normal|bold"
+            app:autoplay="false"
+            android:text="..."
+            app:period="1200" />
+
+    </LinearLayout>
+</LinearLayout>

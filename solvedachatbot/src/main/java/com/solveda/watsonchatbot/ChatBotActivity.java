@@ -10,18 +10,31 @@ import android.provider.Settings;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.solveda.watsonchatbot.messages.MessageAdapter;
 import com.solveda.watsonchatbot.messages.MessageData;
 import com.solveda.watsonchatbot.messages.MessageInput;
 import com.solveda.watsonchatbot.messages.MessagesList;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 public class ChatBotActivity extends AppCompatActivity implements
@@ -32,12 +45,22 @@ public class ChatBotActivity extends AppCompatActivity implements
         MessagesList.ItemClick
 {
 
+    String [] message = {"The real estate chatbot template is ready to go for Realtors.",
+                        "Automation basics free you up to keep growing your business.",
+                        "The welcome page lets new clients segment themselves by what they’re looking for (to buy, rent or sell).",
+                        "You can use contact forms that let interested people let you know their phone number and email where they want to be contacted and their preference.",
+                        "Or, deliver inquiry forms for buyers, sellers and renters each collect data like where they’re looking, what they’re looking for, bedrooms and budget.",
+                        "“Meet the Team” pages to showcase your personality and experience and give people a way to contact the agent directly.",
+                        "The lead generation chatbot template is perfect for collecting contact information in exchange for things like webinar tickets or downloads.",
+                        "Whenever the chatbot gets a new contact, you’ll get an email notification so you can follow up with your fresh lead!"};
+
     SpeechRecognizer mSpeechRecognizer;
     Intent mSpeechRecognizerIntent;
 
     protected MessageInput input;
     protected MessageAdapter adapter;
     protected MessagesList messagesList;
+    protected FloatingActionButton btnScrollToEnd;
 
 
     public void init()
@@ -86,6 +109,25 @@ public class ChatBotActivity extends AppCompatActivity implements
         adapter =new MessageAdapter();
         messagesList.setAdapter(adapter);
         adapter.setItemClick(this);
+        btnScrollToEnd.setEnabled( false);
+        btnScrollToEnd.hide();
+        messagesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (adapter.getItemCount()<=8 ||  messagesList.getLayoutManager().findLastCompletelyVisibleItemPosition() < adapter.getItemCount() - 5)
+                {
+                    btnScrollToEnd.setEnabled( false);
+                    btnScrollToEnd.hide();
+                }
+                else {
+                    btnScrollToEnd.setEnabled( true);
+                    btnScrollToEnd.show();
+
+                }
+            }
+        });
     }
 
     //-----------------------RecognitionListener-------------------------
@@ -148,11 +190,24 @@ public class ChatBotActivity extends AppCompatActivity implements
         //Message Data
         MessageData messageData=new MessageData();
 
-        messageData.setBotMessage(random.nextBoolean());
+        messageData.setBotMessage(false);
         messageData.setMessageType(MessageData.TYPE_TEXT);
         messageData.setMessage(input.toString());
         messageData.setDateTime("12:10");
         adapter.addToStart(messageData,true);
+        adapter.addToStart(null,true);
+        messagesList.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.removeDots();
+                MessageData messageData=new MessageData();
+                messageData.setBotMessage(true);
+                messageData.setMessageType(MessageData.TYPE_TEXT);
+                messageData.setMessage(message[random.nextInt(message.length-1)]);
+                messageData.setDateTime("12:10");
+                adapter.addToStart(messageData,true);
+            }
+        },2000);
         return true;
     }
 
@@ -209,4 +264,90 @@ public class ChatBotActivity extends AppCompatActivity implements
     public void onDislikeClick(Object data) {
         Toast.makeText(this,"Dislike Click",Toast.LENGTH_LONG).show();
     }
+
+    public void scrollToEnd(View v)
+    {
+        messagesList.smoothScrollToPosition(0);
+    }
+
+
+    private void sendText(String text)
+    {
+        String url = "";
+        StringRequest request =new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+
+
+
+
+       /* StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        //Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                       // Log.d("Error.Response", response);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("name", "Alif");
+                params.put("domain", "http://itsalif.info");
+
+                return params;
+            }
+        };
+        queue.add(postRequest);*/
+
+    }
+
+
+    private void sendLikeDislike(String messageId,boolean isLike) {
+        String url = "";
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+    }
+
+
+
 }

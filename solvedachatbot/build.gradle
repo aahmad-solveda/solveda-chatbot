@@ -46,4 +46,5 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:$circleImageViewVersion"
     implementation "com.github.siyamed:android-shape-imageview:$shapeImageViewVersion"
     implementation "com.google.android:flexbox:$flexboxVersion"
+    implementation 'com.android.volley:volley:1.1.1'
 }
