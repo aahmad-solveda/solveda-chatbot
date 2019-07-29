@@ -113,6 +113,23 @@ public class MessagesListStyle extends Style {
     private int dateHeaderTextSize;
     private int dateHeaderTextStyle;
 
+    private int productTextColor;
+    private int productTextSize;
+    private int productTextFont;
+    private int productTextStyle;
+
+    private int productInfoBtnTextColor;
+    private int productInfoBtnTextSize;
+    private int productInfoBtnTextFont;
+    private int productInfoBtnBackground;
+    private int productInfoBtnTextStyle;
+
+    private int productOthersBtnTextColor;
+    private int productOthersBtnTextSize;
+    private int productOthersBtnTextFont;
+    private int productOthersBtnBackground;
+    private int productOthersBtnTextStyle;
+
     static MessagesListStyle parse(Context context, AttributeSet attrs) {
         MessagesListStyle style = new MessagesListStyle(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MessagesList);
@@ -231,6 +248,32 @@ public class MessagesListStyle extends Style {
         style.dateHeaderTextSize = typedArray.getDimensionPixelSize(R.styleable.MessagesList_dateHeaderTextSize,
                 style.getDimension(R.dimen.message_date_header_text_size));
         style.dateHeaderTextStyle = typedArray.getInt(R.styleable.MessagesList_dateHeaderTextStyle, Typeface.NORMAL);
+
+
+        style.productTextColor = typedArray.getColor(R.styleable.MessagesList_productTextColor,
+                style.getColor(R.color.dark_grey_two));
+        style.productTextSize = typedArray.getDimensionPixelSize(R.styleable.MessagesList_productTextSize,
+                style.getDimension(R.dimen.message_text_size));
+        style.productTextStyle = typedArray.getInt(R.styleable.MessagesList_productTextStyle, Typeface.NORMAL);
+        style.productTextFont = typedArray.getResourceId(R.styleable.MessagesList_productTextFont, -1);
+
+
+        style.productInfoBtnTextColor = typedArray.getColor(R.styleable.MessagesList_productInfoBtnTextColor,
+                style.getColor(R.color.dark_grey_two));
+        style.productInfoBtnTextSize = typedArray.getDimensionPixelSize(R.styleable.MessagesList_productInfoBtnTextSize,
+                style.getDimension(R.dimen.message_text_size));
+        style.productInfoBtnTextStyle = typedArray.getInt(R.styleable.MessagesList_productInfoBtnTextStyle, Typeface.NORMAL);
+        style.productInfoBtnTextFont = typedArray.getResourceId(R.styleable.MessagesList_productInfoBtnTextFont, -1);
+        style.productInfoBtnBackground = typedArray.getResourceId(R.styleable.MessagesList_productInfoBtnBackground, -1);
+
+
+        style.productOthersBtnTextColor = typedArray.getColor(R.styleable.MessagesList_productInfoBtnTextColor,
+                style.getColor(R.color.dark_grey_two));
+        style.productOthersBtnTextSize = typedArray.getDimensionPixelSize(R.styleable.MessagesList_productInfoBtnTextSize,
+                style.getDimension(R.dimen.message_text_size));
+        style.productOthersBtnTextStyle = typedArray.getInt(R.styleable.MessagesList_productOthersBtnTextStyle, Typeface.NORMAL);
+        style.productOthersBtnTextFont = typedArray.getResourceId(R.styleable.MessagesList_productOthersBtnTextFont, -1);
+        style.productOthersBtnBackground = typedArray.getResourceId(R.styleable.MessagesList_productOthersBtnBackground, -1);
 
         typedArray.recycle();
 
@@ -469,6 +512,102 @@ public class MessagesListStyle extends Style {
         return playButton;
     }
 
+    public int getIncomingDefaultBubbleColor() {
+        return incomingDefaultBubbleColor;
+    }
+
+    public int getIncomingDefaultBubblePressedColor() {
+        return incomingDefaultBubblePressedColor;
+    }
+
+    public int getIncomingDefaultBubbleSelectedColor() {
+        return incomingDefaultBubbleSelectedColor;
+    }
+
+    public int getIncomingDefaultImageOverlayPressedColor() {
+        return incomingDefaultImageOverlayPressedColor;
+    }
+
+    public int getIncomingDefaultImageOverlaySelectedColor() {
+        return incomingDefaultImageOverlaySelectedColor;
+    }
+
+    public int getOutcomingDefaultBubbleColor() {
+        return outcomingDefaultBubbleColor;
+    }
+
+    public int getOutcomingDefaultBubblePressedColor() {
+        return outcomingDefaultBubblePressedColor;
+    }
+
+    public int getOutcomingDefaultBubbleSelectedColor() {
+        return outcomingDefaultBubbleSelectedColor;
+    }
+
+    public int getOutcomingDefaultImageOverlayPressedColor() {
+        return outcomingDefaultImageOverlayPressedColor;
+    }
+
+    public int getOutcomingDefaultImageOverlaySelectedColor() {
+        return outcomingDefaultImageOverlaySelectedColor;
+    }
+
+    public int getProductTextColor() {
+        return productTextColor;
+    }
+
+    public int getProductTextSize() {
+        return productTextSize;
+    }
+
+    public int getProductTextFont() {
+        return productTextFont;
+    }
+
+    public int getProductTextStyle() {
+        return productTextStyle;
+    }
+
+    public int getProductInfoBtnTextColor() {
+        return productInfoBtnTextColor;
+    }
+
+    public int getProductInfoBtnTextSize() {
+        return productInfoBtnTextSize;
+    }
+
+    public int getProductInfoBtnTextFont() {
+        return productInfoBtnTextFont;
+    }
+
+    public int getProductInfoBtnBackground() {
+        return productInfoBtnBackground;
+    }
+
+    public int getProductInfoBtnTextStyle() {
+        return productInfoBtnTextStyle;
+    }
+
+    public int getProductOthersBtnTextColor() {
+        return productOthersBtnTextColor;
+    }
+
+    public int getProductOthersBtnTextSize() {
+        return productOthersBtnTextSize;
+    }
+
+    public int getProductOthersBtnTextFont() {
+        return productOthersBtnTextFont;
+    }
+
+    public int getProductOthersBtnBackground() {
+        return productOthersBtnBackground;
+    }
+
+    public int getProductOthersBtnTextStyle() {
+        return productOthersBtnTextStyle;
+    }
+
     public int getLikeButtonColor() {
         return likeButtonColor;
     }
@@ -476,4 +615,6 @@ public class MessagesListStyle extends Style {
     public int getDisLikeButtonColor() {
         return disLikeButtonColor;
     }
+
+
 }

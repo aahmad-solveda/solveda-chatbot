@@ -101,14 +101,36 @@
             <flag name="italic" value="2"/>
         </attr>
 
-        <!--<attr name="incomingImageTimeTextColor" format="color|reference"/>
-        <attr name="incomingImageTimeTextSize" format="dimension|reference"/>
-        <attr name="incomingImageTimeTextFont" format="reference"/>
-        <attr name="incomingImageTimeTextStyle">
+        <attr name="productTextColor" format="color|reference"/>
+        <attr name="productTextSize" format="dimension|reference"/>
+        <attr name="productTextFont" format="reference"/>
+        <attr name="productTextStyle">
             <flag name="normal" value="0"/>
             <flag name="bold" value="1"/>
             <flag name="italic" value="2"/>
-        </attr>-->
+        </attr>
+
+
+        <attr name="productInfoBtnTextColor" format="color|reference"/>
+        <attr name="productInfoBtnTextSize" format="dimension|reference"/>
+        <attr name="productInfoBtnTextFont" format="reference"/>
+        <attr name="productInfoBtnBackground" format="reference"/>
+        <attr name="productInfoBtnTextStyle">
+            <flag name="normal" value="0"/>
+            <flag name="bold" value="1"/>
+            <flag name="italic" value="2"/>
+        </attr>
+
+        <attr name="productOthersBtnTextColor" format="color|reference"/>
+        <attr name="productOthersBtnTextSize" format="dimension|reference"/>
+        <attr name="productOthersBtnTextFont" format="reference"/>
+        <attr name="productOthersBtnBackground" format="reference"/>
+        <attr name="productOthersBtnTextStyle">
+            <flag name="normal" value="0"/>
+            <flag name="bold" value="1"/>
+            <flag name="italic" value="2"/>
+        </attr>
+
 
         <attr name="likeButtonColor" format="color|reference"/>
         <attr name="dislikeButtonColor" format="color|reference"/>
@@ -145,14 +167,6 @@
             <flag name="italic" value="2"/>
         </attr>
 
-       <!-- <attr name="outcomingImageTimeTextColor" format="color|reference"/>
-        <attr name="outcomingImageTimeTextSize" format="dimension|reference"/>
-        <attr name="outcomingImageTimeTextFont" format="reference"/>
-        <attr name="outcomingImageTimeTextStyle">
-            <flag name="normal" value="0"/>
-            <flag name="bold" value="1"/>
-            <flag name="italic" value="2"/>
-        </attr>-->
 
         <attr name="dateHeaderPadding" format="dimension|reference"/>
         <attr name="dateHeaderFormat" format="string|reference"/>

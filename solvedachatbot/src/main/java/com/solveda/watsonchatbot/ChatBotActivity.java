@@ -16,22 +16,29 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.solveda.watsonchatbot.messages.MessageAdapter;
 import com.solveda.watsonchatbot.messages.MessageData;
 import com.solveda.watsonchatbot.messages.MessageInput;
 import com.solveda.watsonchatbot.messages.MessagesList;
+import com.solveda.watsonchatbot.models.BotResponse;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -44,16 +51,6 @@ public class ChatBotActivity extends AppCompatActivity implements
         MessageInput.AudioListener,
         MessagesList.ItemClick
 {
-
-    String [] message = {"The real estate chatbot template is ready to go for Realtors.",
-                        "Automation basics free you up to keep growing your business.",
-                        "The welcome page lets new clients segment themselves by what they’re looking for (to buy, rent or sell).",
-                        "You can use contact forms that let interested people let you know their phone number and email where they want to be contacted and their preference.",
-                        "Or, deliver inquiry forms for buyers, sellers and renters each collect data like where they’re looking, what they’re looking for, bedrooms and budget.",
-                        "“Meet the Team” pages to showcase your personality and experience and give people a way to contact the agent directly.",
-                        "The lead generation chatbot template is perfect for collecting contact information in exchange for things like webinar tickets or downloads.",
-                        "Whenever the chatbot gets a new contact, you’ll get an email notification so you can follow up with your fresh lead!"};
-
     SpeechRecognizer mSpeechRecognizer;
     Intent mSpeechRecognizerIntent;
 
@@ -61,15 +58,19 @@ public class ChatBotActivity extends AppCompatActivity implements
     protected MessageAdapter adapter;
     protected MessagesList messagesList;
     protected FloatingActionButton btnScrollToEnd;
-
-
-    public void init()
+    String base_url;
+    RequestQueue queue ;
+    Gson gson;
+    SimpleDateFormat format;
+    JSONObject currentContext;
+    boolean canSend=true;
+    public void init(String base_url)
     {
         initMessageAdapter();
         input.setInputListener(this);
         //input.setAttachmentsListener(this);
         input.setAudioListener(this);
-
+        this.base_url = base_url;
         mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -102,6 +103,11 @@ public class ChatBotActivity extends AppCompatActivity implements
 
             }
         }
+
+        queue = Volley.newRequestQueue(this);
+        gson =new Gson();
+        format =new SimpleDateFormat("hh:mm a",Locale.ENGLISH);
+        initChat();
     }
 
     private void initMessageAdapter()
@@ -116,7 +122,17 @@ public class ChatBotActivity extends AppCompatActivity implements
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (adapter.getItemCount()<=8 ||  messagesList.getLayoutManager().findLastCompletelyVisibleItemPosition() < adapter.getItemCount() - 5)
+                Log.w("LastCompletelyVisible",""+messagesList.getLayoutManager().findLastCompletelyVisibleItemPosition());
+                Log.w("FirstCompletelyVisible",""+messagesList.getLayoutManager().findFirstCompletelyVisibleItemPosition());
+                if (messagesList.getLayoutManager().findLastCompletelyVisibleItemPosition() <  5) {
+                    btnScrollToEnd.setEnabled( false);
+                    btnScrollToEnd.hide();
+                }
+                else {
+                    btnScrollToEnd.setEnabled( true);
+                    btnScrollToEnd.show();
+                }
+                /*if (adapter.getItemCount()<=8 ||  messagesList.getLayoutManager().findLastCompletelyVisibleItemPosition() < adapter.getItemCount() - 5)
                 {
                     btnScrollToEnd.setEnabled( false);
                     btnScrollToEnd.hide();
@@ -125,7 +141,7 @@ public class ChatBotActivity extends AppCompatActivity implements
                     btnScrollToEnd.setEnabled( true);
                     btnScrollToEnd.show();
 
-                }
+                }*/
             }
         });
     }
@@ -188,27 +204,41 @@ public class ChatBotActivity extends AppCompatActivity implements
     @Override
     public boolean onSubmit(CharSequence input) {
         //Message Data
-        MessageData messageData=new MessageData();
 
-        messageData.setBotMessage(false);
-        messageData.setMessageType(MessageData.TYPE_TEXT);
-        messageData.setMessage(input.toString());
-        messageData.setDateTime("12:10");
-        adapter.addToStart(messageData,true);
-        adapter.addToStart(null,true);
-        messagesList.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                adapter.removeDots();
-                MessageData messageData=new MessageData();
-                messageData.setBotMessage(true);
-                messageData.setMessageType(MessageData.TYPE_TEXT);
-                messageData.setMessage(message[random.nextInt(message.length-1)]);
-                messageData.setDateTime("12:10");
-                adapter.addToStart(messageData,true);
-            }
-        },2000);
-        return true;
+        if(canSend) {
+
+            MessageData messageData = new MessageData();
+            messageData.setBotMessage(false);
+            messageData.setMessageType(MessageData.TYPE_TEXT);
+            messageData.setMessage(input.toString());
+            messageData.setDateTime(format.format(System.currentTimeMillis()));
+            adapter.addToStart(messageData, true);
+            adapter.addToStart(null, true);
+            sendText(input.toString());
+            /*messageData.setBotMessage(false);
+            messageData.setMessageType(MessageData.TYPE_TEXT);
+            messageData.setMessage(input.toString());
+            messageData.setDateTime("12:10");
+            adapter.addToStart(messageData,true);
+            adapter.addToStart(null,true);
+            messagesList.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.removeDots();
+                    MessageData messageData=new MessageData();
+                    messageData.setBotMessage(true);
+                    messageData.setMessageType(MessageData.TYPE_TEXT);
+                    messageData.setMessage(message[random.nextInt(message.length-1)]);
+                    messageData.setDateTime("12:10");
+                    adapter.addToStart(messageData,true);
+                }
+            },2000);*/
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     @Override
@@ -270,61 +300,73 @@ public class ChatBotActivity extends AppCompatActivity implements
         messagesList.smoothScrollToPosition(0);
     }
 
+    private void initChat() {
 
-    private void sendText(String text)
-    {
-        String url = "";
-        StringRequest request =new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        canSend = false;
+        Log.d("WATSON_RESPONSE","API CALLING");
+        JSONObject object=new JSONObject();
+        try
+        {
+            JSONObject context = new JSONObject();
+            JSONObject input = new JSONObject();
+            input.put("text","");
+            object.put("context",context);
+            object.put("input",input);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        JsonObjectRequest request =new JsonObjectRequest(Request.Method.POST, base_url, object, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-
+            public void onResponse(JSONObject response) {
+                canSend = true;
+                Log.d("WATSON_RESPONSE",response.toString());
+                currentContext = parseResponse(response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                canSend = true;
+                Toast.makeText(ChatBotActivity.this,error.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+              //  Log.d("WATSON_RESPONSE",error.getLocalizedMessage());
             }
-        })
+        });
+        queue.add(request);
+    }
+
+    private void sendText(final String text)
+    {
+        Log.d("WATSON_RESPONSE","API CALLING");
+        JSONObject object=new JSONObject();
+        try
         {
+            JSONObject context = new JSONObject();
+            JSONObject input = new JSONObject();
+            input.put("text",text);
+            object.put("context",currentContext==null?new JSONObject():currentContext);
+            object.put("input",input);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        JsonObjectRequest request =new JsonObjectRequest(Request.Method.POST, base_url, object, new Response.Listener<JSONObject>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return super.getParams();
+            public void onResponse(JSONObject response) {
+                canSend = true;
+                Log.d("WATSON_RESPONSE",response.toString());
+                currentContext = parseResponse(response.toString());
             }
-        };
-
-
-
-
-       /* StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        //Log.d("Response", response);
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                       // Log.d("Error.Response", response);
-                    }
-                }
-        ) {
+        }, new Response.ErrorListener() {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("name", "Alif");
-                params.put("domain", "http://itsalif.info");
-
-                return params;
+            public void onErrorResponse(VolleyError error) {
+                canSend = true;
+              //  Toast.makeText(ChatBotActivity.this,error.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+           //     Log.d("WATSON_RESPONSE",error.getLocalizedMessage());
             }
-        };
-        queue.add(postRequest);*/
-
+        });
+        queue.add(request);
     }
 
 
@@ -333,7 +375,7 @@ public class ChatBotActivity extends AppCompatActivity implements
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                parseResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -348,6 +390,44 @@ public class ChatBotActivity extends AppCompatActivity implements
         };
     }
 
+    private JSONObject parseResponse(String result)
+    {
+        try
+        {
+            JSONObject res=new JSONObject(result);
+            JSONObject context=res.getJSONObject("context");
+            BotResponse response= gson.fromJson(result, BotResponse.class);
+            adapter.removeDots();
+            if(response.getOutput()!=null && response.getOutput().getText()!=null )
+            {
+                for(int i=0; i<response.getOutput().getText().size();i++)
+                {
+                    MessageData messageData=new MessageData();
+                    messageData.setBotMessage(true);
+                    messageData.setMessageType(MessageData.TYPE_TEXT);
+                    messageData.setMessage(response.getOutput().getText().get(i));
+                    messageData.setDateTime(format.format(System.currentTimeMillis()));
+                    adapter.addToStart(messageData,true);
+                }
+            }
+            else if(response.getOutput()!=null && response.getOutput().getPlainText()!=null )
+            {
+                MessageData messageData=new MessageData();
+                messageData.setBotMessage(true);
+                messageData.setMessageType(MessageData.TYPE_TEXT);
+                messageData.setMessage(response.getOutput().getPlainText());
+                messageData.setDateTime(format.format(System.currentTimeMillis()));
+                adapter.addToStart(messageData,true);
+            }
+
+            return context;
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            return new JSONObject();
+        }
+    }
 
 
 }

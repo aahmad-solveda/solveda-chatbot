@@ -33,7 +33,7 @@ public class MainActivity extends ChatBotActivity {
         {
             ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(),     PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
-            String myApiKey = bundle.getString("watson_url");
+            String url = bundle.getString("watson_url");
             //Toast.makeText(this,myApiKey,Toast.LENGTH_LONG).show();
         }
         catch (Exception ex)
@@ -44,7 +44,8 @@ public class MainActivity extends ChatBotActivity {
         this.messagesList = (MessagesList) findViewById(R.id.messagesList);
         this.input = (MessageInput) findViewById(R.id.input);
         this.btnScrollToEnd = (FloatingActionButton)findViewById(R.id.btnScrollToEnd);
-        init();
+        //init("http://192.168.1.2:8094/api/message");
+        init("http://ayurvedabot.eu-gb.mybluemix.net/api/message");
 
        /* FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,16 +77,13 @@ public class MainActivity extends ChatBotActivity {
         if (id == R.id.action_settings) {
             //return true;
 
-
             MessageData messageData=new MessageData();
-            messageData.setBotMessage(random.nextBoolean());
-            messageData.setMessage("Now we need to add code in our library. Create a new Class in your module and name that class ToasterMessage;");
-            messageData.setMessageType(MessageData.TYPE_VIDEO);
+            messageData.setBotMessage(true);
+            messageData.setMessage("Now we need to add code in our library. Create a new Class in your module and name that class Toaster Message;");
+            messageData.setMessageType(MessageData.TYPE_PRODUCT);
             messageData.setDateTime("12:10");
             adapter.addToStart(messageData,true);
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

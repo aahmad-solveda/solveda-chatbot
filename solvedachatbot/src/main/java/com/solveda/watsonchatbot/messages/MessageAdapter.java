@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,9 +33,10 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
     private static final int TYPE_TEXT_INCOMING=1;
     private static final int TYPE_TEXT_OUTGOING=2;
     private static final int TYPE_IMAGE_INCOMING=3;
-    private static final int TYPE_IMAGE_OUTGOING=4;
+   // private static final int TYPE_IMAGE_OUTGOING=4;
     private static final int TYPE_VIDEO_INCOMING=5;
-    private static final int TYPE_VIDEO_OUTGOING=6;
+   // private static final int TYPE_VIDEO_OUTGOING=6;
+    private static final int TYPE_PRODUCT=8;
     private static final int TYPE_DOTS_VIEW=7;
 
     protected List<Object> items;
@@ -78,6 +81,10 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                 {
                     return TYPE_VIDEO_INCOMING;
                 }
+                else if(data.getMessageType() ==MessageData.TYPE_PRODUCT)
+                {
+                    return TYPE_PRODUCT;
+                }
             }
             else
             {
@@ -85,14 +92,14 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                 {
                     return TYPE_TEXT_OUTGOING;
                 }
-                else if(data.getMessageType()==MessageData.TYPE_IMAGE)
+                /*else if(data.getMessageType()==MessageData.TYPE_IMAGE)
                 {
                     return TYPE_IMAGE_OUTGOING;
                 }
                 else if(data.getMessageType()==MessageData.TYPE_VIDEO)
                 {
                     return TYPE_VIDEO_OUTGOING;
-                }
+                }*/
             }
         }
         return TYPE_TEXT_OUTGOING;
@@ -123,25 +130,18 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             holder.applyStyle(messagesListStyle,itemClick);
             return holder;
         }
+        else if(i==TYPE_PRODUCT)
+        {
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_product_detail, viewGroup, false);
+            ProductInfoViewHolder holder=new ProductInfoViewHolder(v);
+            holder.applyStyle(messagesListStyle,itemClick);
+            return holder;
+        }
         else if(i==TYPE_TEXT_OUTGOING)
         {
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chatkit_item_outcoming_text_message, viewGroup, false);
             OutGoingTextMessageViewHolder holder =new OutGoingTextMessageViewHolder(v);
             holder.applyStyle(messagesListStyle);
-            return holder;
-        }
-        else if(i==TYPE_IMAGE_OUTGOING)
-        {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chatkit_item_outcoming_image_message, viewGroup, false);
-            OutGoingImageMessageViewHolder holder =new OutGoingImageMessageViewHolder(v);
-            holder.applyStyle(messagesListStyle,itemClick);
-            return holder;
-        }
-        else if(i==TYPE_VIDEO_OUTGOING)
-        {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chatkit_item_outcoming_image_message, viewGroup, false);
-            OutGoingImageMessageViewHolder holder =new OutGoingImageMessageViewHolder(v);
-            holder.applyStyle(messagesListStyle,itemClick);
             return holder;
         }
         else if(i==TYPE_DOTS_VIEW)
@@ -182,11 +182,10 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
         {
             ((OutGoingTextMessageViewHolder) viewHolder).onBindData((MessageData)items.get(i));
         }
-        else  if(viewHolder instanceof OutGoingImageMessageViewHolder)
+        else if(viewHolder instanceof ProductInfoViewHolder)
         {
-            ((OutGoingImageMessageViewHolder) viewHolder).onBindData((MessageData)items.get(i));
+            ((ProductInfoViewHolder) viewHolder).onBindData((MessageData)items.get(i));
         }
-
     }
 
     @Override
@@ -232,7 +231,6 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             if(items.get(i)==null) {
                 items.remove(i);
                 notifyItemRemoved(i);
-                break;
             }
         }
     }
@@ -263,7 +261,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
         public void onBindData(IMessageData data)
         {
             if(messageText!=null)
-                messageText.setText(data.getMessage());
+                messageText.setText(Html.fromHtml(data.getMessage()));
             if(messageTime!=null)
                 messageTime.setText(data.getDateTime());
           /*  if(bubble!=null)
@@ -370,7 +368,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
         public void onBindData(IMessageData data)
         {
             if(messageText!=null)
-                messageText.setText(data.getMessage());
+                messageText.setText(Html.fromHtml(data.getMessage()));
             if(messageTime!=null)
                 messageTime.setText(data.getDateTime());
             if(image!=null) {
@@ -613,6 +611,141 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
     }
 
 
+    public static class ProductInfoViewHolder extends RecyclerView.ViewHolder
+    {
+        ImageView image;
+        TextView messageText;
+        Button btnInfo,btn1,btn2,btn3,btn4;
+        ViewGroup bubble;
+        public ProductInfoViewHolder(@NonNull View itemView) {
+            super(itemView);
+            image = itemView.findViewById(R.id.image);
+            messageText = itemView.findViewById(R.id.messageText);
+            btnInfo = itemView.findViewById(R.id.btnInfo);
+            btn1 = itemView.findViewById(R.id.btn1);
+            btn2 = itemView.findViewById(R.id.btn2);
+            btn3 = itemView.findViewById(R.id.btn3);
+            btn4 = itemView.findViewById(R.id.btn4);
+            bubble = itemView.findViewById(R.id.bubble);
+        }
+        public void onBindData(IMessageData data)
+        {
+            if(messageText!=null)
+                messageText.setText(Html.fromHtml(data.getMessage()));
+            if(image!=null) {
+                //Picasso.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
+                Glide.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
+                image.setTag("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
+            }
+            // Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
+          /*  if(bubble!=null)
+                bubble.setSelected(true);*/
+        }
+        public void applyStyle(MessagesListStyle style, final MessagesList.ItemClick itemClick)
+        {
+            if (image!=null && image instanceof RoundedImageView) {
+                ((RoundedImageView) image).setCorners(
+                        R.dimen.message_bubble_corners_radius,
+                        R.dimen.message_bubble_corners_radius,
+                        0,
+                        0
+                );
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                        {
+                            itemClick.onImage(v.getTag().toString());
+                        }
+                    }
+                });
+            }
+            if(bubble!=null)
+            {
+                ViewCompat.setBackground(bubble, style.getIncomingBubbleDrawable());
+            }
+            if (messageText != null) {
+                messageText.setTextColor(style.getIncomingTextColor());
+                messageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getIncomingTextSize());
+                messageText.setTypeface(messageText.getTypeface(), style.getIncomingTextStyle());
+                messageText.setAutoLinkMask(style.getTextAutoLinkMask());
+                messageText.setLinkTextColor(style.getIncomingTextLinkColor());
+                if(style.getIncomingTextFont()!=-1)
+                    messageText.setTypeface(ResourcesCompat.getFont(messageText.getContext(),style.getIncomingTextFont()));
+                // configureLinksBehavior(messageText);
+            }
+            if(btnInfo!=null)
+            {
+                btnInfo.setTextColor(style.getProductInfoBtnTextColor());
+                btnInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductInfoBtnTextSize());
+                btnInfo.setTypeface(btnInfo.getTypeface(), style.getProductInfoBtnTextStyle());
+                if(style.getProductInfoBtnTextFont()!=-1)
+                    btnInfo.setTypeface(ResourcesCompat.getFont(btnInfo.getContext(),style.getProductInfoBtnTextFont()));
+                if(style.getProductInfoBtnBackground()!=-1)
+                    btnInfo.setBackgroundResource(style.getProductInfoBtnBackground());
+            }
+            else if(btn1!=null)
+            {
+                btn1.setTextColor(style.getProductOthersBtnTextColor());
+                btn1.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
+                btn1.setTypeface(btn1.getTypeface(), style.getProductOthersBtnTextStyle());
+                if(style.getProductInfoBtnTextFont()!=-1)
+                    btn1.setTypeface(ResourcesCompat.getFont(btn1.getContext(),style.getProductOthersBtnTextFont()));
+                if(style.getProductOthersBtnBackground()!=-1)
+                    btn1.setBackgroundResource(style.getProductOthersBtnBackground());
+            }
+            else if(btn2!=null)
+            {
+                btn2.setTextColor(style.getProductOthersBtnTextColor());
+                btn2.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
+                btn2.setTypeface(btn2.getTypeface(), style.getProductOthersBtnTextStyle());
+                if(style.getProductInfoBtnTextFont()!=-1)
+                    btn2.setTypeface(ResourcesCompat.getFont(btn2.getContext(),style.getProductOthersBtnTextFont()));
+                if(style.getProductOthersBtnBackground()!=-1)
+                    btn2.setBackgroundResource(style.getProductOthersBtnBackground());
+            }
+            else if(btn3!=null)
+            {
+                btn3.setTextColor(style.getProductOthersBtnTextColor());
+                btn3.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
+                btn3.setTypeface(btn3.getTypeface(), style.getProductOthersBtnTextStyle());
+                if(style.getProductInfoBtnTextFont()!=-1)
+                    btn3.setTypeface(ResourcesCompat.getFont(btn3.getContext(),style.getProductOthersBtnTextFont()));
+                if(style.getProductOthersBtnBackground()!=-1)
+                    btn3.setBackgroundResource(style.getProductOthersBtnBackground());
+            }
+            else if(btn4!=null)
+            {
+                btn4.setTextColor(style.getProductOthersBtnTextColor());
+                btn4.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
+                btn4.setTypeface(btn4.getTypeface(), style.getProductOthersBtnTextStyle());
+                if(style.getProductInfoBtnTextFont()!=-1)
+                    btn4.setTypeface(ResourcesCompat.getFont(btn4.getContext(),style.getProductOthersBtnTextFont()));
+                if(style.getProductOthersBtnBackground()!=-1)
+                    btn4.setBackgroundResource(style.getProductOthersBtnBackground());
+            }
+
+        }
+
+        private void configureLinksBehavior(TextView messageText) {
+            messageText.setLinksClickable(false);
+            messageText.setMovementMethod(new LinkMovementMethod() {
+                @Override
+                public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+                    boolean result = false;
+                    //if (!MessagesListAdapter.isSelectionModeEnabled)
+                    {
+                        result = super.onTouchEvent(widget, buffer, event);
+                    }
+                    itemView.onTouchEvent(event);
+                    return result;
+                }
+            });
+        }
+
+    }
+
+
 
     public static class OutGoingTextMessageViewHolder extends RecyclerView.ViewHolder
     {
@@ -677,101 +810,6 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                     return result;
                 }
             });*/
-        }
-
-    }
-
-
-    public static class OutGoingImageMessageViewHolder extends RecyclerView.ViewHolder
-    {
-        ImageView messageUserAvatar,image;
-        TextView messageText,messageTime;
-        View  imageOverlay;
-        ViewGroup bubble;
-        public OutGoingImageMessageViewHolder(@NonNull View itemView) {
-            super(itemView);
-            messageUserAvatar = itemView.findViewById(R.id.messageUserAvatar);
-            image = itemView.findViewById(R.id.image);
-            messageText = itemView.findViewById(R.id.messageText);
-            messageTime = itemView.findViewById(R.id.messageTime);
-            imageOverlay = itemView.findViewById(R.id.imageOverlay);
-            bubble = itemView.findViewById(R.id.bubble);
-        }
-        public void onBindData(IMessageData data)
-        {
-            if(messageText!=null)
-                messageText.setText(data.getMessage());
-            if(messageTime!=null)
-                messageTime.setText(data.getDateTime());
-            if(image!=null) {
-                //Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
-                Glide.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png");
-                image.setTag("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png");
-            }
-          /*  if(bubble!=null)
-                bubble.setSelected(true);*/
-        }
-        public void applyStyle(MessagesListStyle style, final MessagesList.ItemClick itemClick)
-        {
-            if (image instanceof RoundedImageView) {
-                ((RoundedImageView) image).setCorners(
-                        R.dimen.message_bubble_corners_radius,
-                        R.dimen.message_bubble_corners_radius,
-                        0,
-                        0
-                );
-                image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(itemClick!=null)
-                        {
-                            itemClick.onImage(v.getTag().toString());
-                        }
-                    }
-                });
-            }
-            if (bubble != null) {
-                bubble.setPadding(style.getIncomingDefaultBubblePaddingLeft(),
-                        style.getIncomingDefaultBubblePaddingTop(),
-                        style.getIncomingDefaultBubblePaddingRight(),
-                        style.getIncomingDefaultBubblePaddingBottom());
-                ViewCompat.setBackground(bubble, style.getOutcomingBubbleDrawable());
-            }
-            if (messageText != null) {
-                messageText.setTextColor(style.getOutcomingTextColor());
-                messageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getOutcomingTextSize());
-                messageText.setTypeface(messageText.getTypeface(), style.getOutcomingTextStyle());
-                messageText.setAutoLinkMask(style.getTextAutoLinkMask());
-                messageText.setLinkTextColor(style.getIncomingTextLinkColor());
-                if(style.getOutcomingTextFont()!=-1)
-                    messageText.setTypeface(ResourcesCompat.getFont(messageText.getContext(),style.getOutcomingTextFont()));
-                // configureLinksBehavior(messageText);
-            }
-            if (messageTime != null) {
-                messageTime.setTextColor(style.getIncomingTimeTextColor());
-                messageTime.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getOutcomingTimeTextSize());
-                messageTime.setTypeface(messageTime.getTypeface(), style.getOutcomingTimeTextStyle());
-                if(style.getOutcomingImageTimeTextFont()!=-1)
-                    messageTime.setTypeface(ResourcesCompat.getFont(messageTime.getContext(),style.getOutcomingImageTimeTextFont()));
-            }
-
-
-        }
-
-        private void configureLinksBehavior(TextView messageText) {
-            messageText.setLinksClickable(false);
-            messageText.setMovementMethod(new LinkMovementMethod() {
-                @Override
-                public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-                    boolean result = false;
-                    //if (!MessagesListAdapter.isSelectionModeEnabled)
-                    {
-                        result = super.onTouchEvent(widget, buffer, event);
-                    }
-                    itemView.onTouchEvent(event);
-                    return result;
-                }
-            });
         }
 
     }

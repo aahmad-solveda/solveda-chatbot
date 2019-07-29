@@ -5,6 +5,7 @@ public class MessageData implements IMessageData
     public static final int TYPE_TEXT=1;
     public static final int TYPE_IMAGE=2;
     public static final int TYPE_VIDEO=3;
+    public static final int TYPE_PRODUCT=4;
 
     private String id;
     private String message;

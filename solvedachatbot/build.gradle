@@ -47,4 +47,5 @@ dependencies {
     implementation "com.github.siyamed:android-shape-imageview:$shapeImageViewVersion"
     implementation "com.google.android:flexbox:$flexboxVersion"
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
 }
