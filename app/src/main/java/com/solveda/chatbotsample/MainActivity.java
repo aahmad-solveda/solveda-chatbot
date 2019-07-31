@@ -3,6 +3,7 @@ package com.solveda.chatbotsample;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ public class MainActivity extends ChatBotActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("Chatbot");
         try
         {
             ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(),     PackageManager.GET_META_DATA);
@@ -46,6 +47,16 @@ public class MainActivity extends ChatBotActivity {
         this.btnScrollToEnd = (FloatingActionButton)findViewById(R.id.btnScrollToEnd);
         //init("http://192.168.1.2:8094/api/message");
         init("http://ayurvedabot.eu-gb.mybluemix.net/api/message");
+        findViewById(R.id.errorView).setVisibility(View.GONE);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        if(!isInternetAvailable())
+        {
+            findViewById(R.id.errorView).setVisibility(View.VISIBLE);
+            messagesList.setVisibility(View.GONE);
+            input.setVisibility(View.GONE);
+
+        }
 
        /* FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +71,7 @@ public class MainActivity extends ChatBotActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+       // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

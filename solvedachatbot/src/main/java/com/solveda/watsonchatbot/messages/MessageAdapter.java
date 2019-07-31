@@ -216,8 +216,21 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
     public void addToStart(MessageData message, boolean scroll) {
 
        // Wrapper<MESSAGE> element = new Wrapper<>(message);
-        items.add(0, message);
-        notifyItemRangeInserted(0,1);
+        if(items.size()>0 && items.get(0)==null)
+        {
+            items.add(1,message);
+            notifyItemRangeInserted(1,1);
+        }
+        else {
+
+            items.add(0, message);
+            notifyItemRangeInserted(0,1);
+            if(!message.isBotMessage()) {
+                items.add(0, null);
+                notifyItemRangeInserted(0,1);
+            }
+        }
+
         if (layoutManager != null && scroll) {
             layoutManager.scrollToPosition(0);
         }

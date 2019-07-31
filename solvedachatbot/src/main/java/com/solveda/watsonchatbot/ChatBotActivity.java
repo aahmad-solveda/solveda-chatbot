@@ -38,6 +38,8 @@ import com.solveda.watsonchatbot.models.BotResponse;
 
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -213,26 +215,8 @@ public class ChatBotActivity extends AppCompatActivity implements
             messageData.setMessage(input.toString());
             messageData.setDateTime(format.format(System.currentTimeMillis()));
             adapter.addToStart(messageData, true);
-            adapter.addToStart(null, true);
+           // adapter.addToStart(null, true);
             sendText(input.toString());
-            /*messageData.setBotMessage(false);
-            messageData.setMessageType(MessageData.TYPE_TEXT);
-            messageData.setMessage(input.toString());
-            messageData.setDateTime("12:10");
-            adapter.addToStart(messageData,true);
-            adapter.addToStart(null,true);
-            messagesList.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.removeDots();
-                    MessageData messageData=new MessageData();
-                    messageData.setBotMessage(true);
-                    messageData.setMessageType(MessageData.TYPE_TEXT);
-                    messageData.setMessage(message[random.nextInt(message.length-1)]);
-                    messageData.setDateTime("12:10");
-                    adapter.addToStart(messageData,true);
-                }
-            },2000);*/
             return true;
         }
         else
@@ -429,5 +413,14 @@ public class ChatBotActivity extends AppCompatActivity implements
         }
     }
 
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress address = InetAddress.getByName("www.google.com");
+            return !address.equals("");
+        } catch (UnknownHostException e) {
+            // Log error
+        }
+        return false;
+    }
 
 }
