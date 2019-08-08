@@ -9,8 +9,8 @@ public class Output {
     List<String> text;
 
 
-    @SerializedName("text1")
-    String plainText ;
+    @SerializedName("chatResponse")
+    List <ChatResponse> chatResponses;
 
 
     @SerializedName("nodes_visited")
@@ -18,7 +18,7 @@ public class Output {
 
 
     @SerializedName("log_messages")
-    List<String> log_messages;
+    List<LogMessages> log_messages;
 
     public List<String> getText() {
         return text;
@@ -36,15 +36,15 @@ public class Output {
         this.nodes_visited = nodes_visited;
     }
 
-    public List<String> getLog_messages() {
+    public List<LogMessages> getLog_messages() {
         return log_messages;
     }
 
-    public void setLog_messages(List<String> log_messages) {
+    public void setLog_messages(List<LogMessages> log_messages) {
         this.log_messages = log_messages;
     }
 
-    public String getPlainText() {
-        return plainText;
+    public List<ChatResponse> getChatResponses() {
+        return chatResponses;
     }
 }

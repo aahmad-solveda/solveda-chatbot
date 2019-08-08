@@ -23,6 +23,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.solveda.watsonchatbot.commons.models.IMessage;
 
@@ -122,5 +123,9 @@ public class MessagesList extends RecyclerView {
         void onVideo(String video, String thumbUrl);
         void onLikeClick(Object data);
         void onDislikeClick(Object data);
+        void onBuyNowClick(IMessageData data);
+        void onProductBenefitsClick(IMessageData data);
+        void onProductIngredientsClick(IMessageData data);
+        void onProductHowToUseClick(IMessageData data);
     }
 }

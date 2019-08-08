@@ -24,17 +24,21 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.solveda.watsonchatbot.messages.IMessageData;
 import com.solveda.watsonchatbot.messages.MessageAdapter;
 import com.solveda.watsonchatbot.messages.MessageData;
 import com.solveda.watsonchatbot.messages.MessageInput;
 import com.solveda.watsonchatbot.messages.MessagesList;
 import com.solveda.watsonchatbot.models.BotResponse;
+import com.solveda.watsonchatbot.models.ChatResponse;
+import com.solveda.watsonchatbot.models.ProductInfo;
 
 import org.json.JSONObject;
 
@@ -42,6 +46,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -275,6 +280,28 @@ public class ChatBotActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBuyNowClick(IMessageData data) {
+
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(data.getProductUrl()));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onProductBenefitsClick(IMessageData data) {
+        sendText("Benefits of "+data.getProductName());
+    }
+
+    @Override
+    public void onProductIngredientsClick(IMessageData data) {
+        sendText("Ingredients of "+data.getProductName());
+    }
+
+    @Override
+    public void onProductHowToUseClick(IMessageData data) {
+        sendText("How to use "+data.getProductName());
+    }
+
+    @Override
     public void onDislikeClick(Object data) {
         Toast.makeText(this,"Dislike Click",Toast.LENGTH_LONG).show();
     }
@@ -345,7 +372,12 @@ public class ChatBotActivity extends AppCompatActivity implements
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(error!=null && error instanceof TimeoutError)
+                {
+                    Toast.makeText(ChatBotActivity.this,"Network Connection timeout! Please try again later.",Toast.LENGTH_LONG).show();
+                }
                 canSend = true;
+                adapter.removeDots();
               //  Toast.makeText(ChatBotActivity.this,error.getLocalizedMessage(),Toast.LENGTH_LONG).show();
            //     Log.d("WATSON_RESPONSE",error.getLocalizedMessage());
             }
@@ -382,32 +414,52 @@ public class ChatBotActivity extends AppCompatActivity implements
             JSONObject context=res.getJSONObject("context");
             BotResponse response= gson.fromJson(result, BotResponse.class);
             adapter.removeDots();
-            if(response.getOutput()!=null && response.getOutput().getText()!=null )
+            //if(response.getOutput()!=null && response.getOutput().getText()!=null )
+            if(response.getOutput()!=null && response.getOutput().getChatResponses()!=null )
             {
-                for(int i=0; i<response.getOutput().getText().size();i++)
+                //for(int i=0; i<response.getOutput().getText().size();i++)
+                for(int i=0; i<response.getOutput().getChatResponses().size();i++)
                 {
-                    MessageData messageData=new MessageData();
-                    messageData.setBotMessage(true);
-                    messageData.setMessageType(MessageData.TYPE_TEXT);
-                    messageData.setMessage(response.getOutput().getText().get(i));
-                    messageData.setDateTime(format.format(System.currentTimeMillis()));
-                    adapter.addToStart(messageData,true);
+                    if(response.getOutput().getChatResponses().get(i).getType().equals(ChatResponse.TYPE_TEXT))
+                    {
+                        for(int j=0; response.getOutput().getChatResponses().get(i).getText()!=null && j<response.getOutput().getChatResponses().get(i).getText().size();j++)
+                        {
+                            MessageData messageData=new MessageData();
+                            messageData.setBotMessage(true);
+                            messageData.setMessageType(MessageData.TYPE_TEXT);
+                            messageData.setMessage(response.getOutput().getChatResponses().get(i).getText().get(j));
+                            messageData.setDateTime(format.format(System.currentTimeMillis()));
+                            adapter.addToStart(messageData,true);
+                        }
+                    }
+                    String s= response.getOutput().getChatResponses().get(i).getType();
+                    if(response.getOutput().getChatResponses().get(i).getType().equals(ChatResponse.TYPE_PRODUCT_INFO))
+                    {
+                        List<ProductInfo> piList =response.getOutput().getChatResponses().get(i).getProductInfo();
+                        for(int j=0; response.getOutput().getChatResponses().get(i).getProductInfo()!=null && j<piList.size();j++)
+                        {
+
+                            MessageData messageData=new MessageData();
+                            messageData.setBotMessage(true);
+                            messageData.setId(piList.get(j).getProduct_id());
+                            messageData.setProductName(piList.get(j).getProduct_name());
+                            messageData.setProductPrice(piList.get(j).getProd_price());
+                            messageData.setImageUrl(piList.get(j).getProd_image());
+                            messageData.setProductUrl(piList.get(j).getProd_url());
+                            messageData.setMessage(piList.get(j).getProd_decs());
+                            messageData.setMessageType(MessageData.TYPE_PRODUCT);
+                            messageData.setDateTime(format.format(System.currentTimeMillis()));
+                            adapter.addToStart(messageData,true);
+                        }
+                    }
                 }
-            }
-            else if(response.getOutput()!=null && response.getOutput().getPlainText()!=null )
-            {
-                MessageData messageData=new MessageData();
-                messageData.setBotMessage(true);
-                messageData.setMessageType(MessageData.TYPE_TEXT);
-                messageData.setMessage(response.getOutput().getPlainText());
-                messageData.setDateTime(format.format(System.currentTimeMillis()));
-                adapter.addToStart(messageData,true);
             }
 
             return context;
         }
         catch (Exception ex)
         {
+            adapter.removeDots();
             ex.printStackTrace();
             return new JSONObject();
         }

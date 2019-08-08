@@ -10,4 +10,7 @@ public interface IMessageData {
     String getImageUrl();
     String getDateTime();
     String getMessage();
+    String getProductName();
+    String getProductPrice();
+    String getProductUrl();
 }

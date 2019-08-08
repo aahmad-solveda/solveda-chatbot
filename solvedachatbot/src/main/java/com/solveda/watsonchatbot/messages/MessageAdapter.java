@@ -385,13 +385,9 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             if(messageTime!=null)
                 messageTime.setText(data.getDateTime());
             if(image!=null) {
-                //Picasso.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
                 Glide.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
-                image.setTag("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
+               //image.setTag("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
             }
-               // Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
-          /*  if(bubble!=null)
-                bubble.setSelected(true);*/
         }
         public void applyStyle(MessagesListStyle style, final MessagesList.ItemClick itemClick)
         {
@@ -517,8 +513,8 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                 long thumb = getLayoutPosition()*1000;
                 RequestOptions options = new RequestOptions().frame(thumb);
                 Glide.with(image.getContext()).load("http://techslides.com/demos/sample-videos/small.mp4").apply(options).into(image);
-                image.setTag(R.string.app_name,"https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
-                image.setTag(R.string.action_settings,"https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
+                //image.setTag(R.string.app_name,"https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
+                //image.setTag(R.string.action_settings,"https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
             }
             // Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
           /*  if(bubble!=null)
@@ -644,15 +640,34 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
         public void onBindData(IMessageData data)
         {
             if(messageText!=null)
-                messageText.setText(Html.fromHtml(data.getMessage()));
-            if(image!=null) {
-                //Picasso.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
-                Glide.with(image.getContext()).load("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png").into(image);
-                image.setTag("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
+                messageText.setText(Html.fromHtml("<b>"+data.getProductName()+"</b><br><font color='black'>Rs "+data.getProductPrice()+"</font><br>"+data.getMessage()+data.getMessage()));
+            if(image!=null && data.getImageUrl()!=null && !data.getImageUrl().isEmpty()) {
+                Glide.with(image.getContext()).load(data.getImageUrl()).into(image);
+                //image.setTag("https://www.messengerpeople.com/wp-content/uploads/2018/08/whatsapp-chatbots-whatsapp-bot-messenger-bot.png");
             }
-            // Picasso.with(image.getContext()).load("https://storage.googleapis.com/ehimages/2018/5/19/img_2910f17c8a7505a0e5f8a1d6ac287903_1526710893725_processed_original.png").into(image);
-          /*  if(bubble!=null)
-                bubble.setSelected(true);*/
+            if(btn4!=null) {
+                btn4.setVisibility(View.GONE);
+            }
+            if(btnInfo!=null) {
+                btnInfo.setText("Buy Now");
+                btnInfo.setTag(data);
+            }
+            if(btn1!=null)
+            {
+                btn1.setText("Benefits");
+                btn1.setTag(data);
+            }
+            if(btn2!=null)
+            {
+                btn2.setText("Ingredients");
+                btn2.setTag(data);
+            }
+            if(btn3!=null)
+            {
+                btn3.setText("How to use");
+                btn3.setTag(data);
+            }
+
         }
         public void applyStyle(MessagesListStyle style, final MessagesList.ItemClick itemClick)
         {
@@ -696,8 +711,15 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                     btnInfo.setTypeface(ResourcesCompat.getFont(btnInfo.getContext(),style.getProductInfoBtnTextFont()));
                 if(style.getProductInfoBtnBackground()!=-1)
                     btnInfo.setBackgroundResource(style.getProductInfoBtnBackground());
+                btnInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                            itemClick.onBuyNowClick((IMessageData)v.getTag());
+                    }
+                });
             }
-            else if(btn1!=null)
+            if(btn1!=null)
             {
                 btn1.setTextColor(style.getProductOthersBtnTextColor());
                 btn1.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
@@ -706,8 +728,16 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                     btn1.setTypeface(ResourcesCompat.getFont(btn1.getContext(),style.getProductOthersBtnTextFont()));
                 if(style.getProductOthersBtnBackground()!=-1)
                     btn1.setBackgroundResource(style.getProductOthersBtnBackground());
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                            itemClick.onProductBenefitsClick((IMessageData)v.getTag());
+                    }
+                });
             }
-            else if(btn2!=null)
+            if(btn2!=null)
             {
                 btn2.setTextColor(style.getProductOthersBtnTextColor());
                 btn2.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
@@ -716,8 +746,16 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                     btn2.setTypeface(ResourcesCompat.getFont(btn2.getContext(),style.getProductOthersBtnTextFont()));
                 if(style.getProductOthersBtnBackground()!=-1)
                     btn2.setBackgroundResource(style.getProductOthersBtnBackground());
+
+                btn2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                            itemClick.onProductIngredientsClick((IMessageData)v.getTag());
+                    }
+                });
             }
-            else if(btn3!=null)
+            if(btn3!=null)
             {
                 btn3.setTextColor(style.getProductOthersBtnTextColor());
                 btn3.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
@@ -726,8 +764,15 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                     btn3.setTypeface(ResourcesCompat.getFont(btn3.getContext(),style.getProductOthersBtnTextFont()));
                 if(style.getProductOthersBtnBackground()!=-1)
                     btn3.setBackgroundResource(style.getProductOthersBtnBackground());
+                btn3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itemClick!=null)
+                            itemClick.onProductHowToUseClick((IMessageData)v.getTag());
+                    }
+                });
             }
-            else if(btn4!=null)
+            if(btn4!=null)
             {
                 btn4.setTextColor(style.getProductOthersBtnTextColor());
                 btn4.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.getProductOthersBtnTextSize());
@@ -736,6 +781,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                     btn4.setTypeface(ResourcesCompat.getFont(btn4.getContext(),style.getProductOthersBtnTextFont()));
                 if(style.getProductOthersBtnBackground()!=-1)
                     btn4.setBackgroundResource(style.getProductOthersBtnBackground());
+
             }
 
         }

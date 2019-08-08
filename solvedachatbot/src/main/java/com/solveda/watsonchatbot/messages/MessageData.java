@@ -8,9 +8,12 @@ public class MessageData implements IMessageData
     public static final int TYPE_PRODUCT=4;
 
     private String id;
-    private String message;
+    private String productName;
+    private String productPrice;
+    private String productUrl;
+    private String message; //it used for product description as well
     private String dateTime;
-    private String ImageUrl;
+    private String ImageUrl; // it used for product image as well
     private String VideoUrl;
     private int messageType;
     private long timeInMillis;
@@ -82,5 +85,33 @@ public class MessageData implements IMessageData
     @Override
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductUrl() {
+        return productUrl;
+    }
+
+    public void setProductUrl(String productUrl) {
+        this.productUrl = productUrl;
     }
 }
