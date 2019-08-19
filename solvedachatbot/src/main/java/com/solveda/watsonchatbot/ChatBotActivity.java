@@ -214,14 +214,15 @@ public class ChatBotActivity extends AppCompatActivity implements
 
         if(canSend) {
 
+            String text = input.toString().replaceAll("\\n"," ");
             MessageData messageData = new MessageData();
             messageData.setBotMessage(false);
             messageData.setMessageType(MessageData.TYPE_TEXT);
-            messageData.setMessage(input.toString());
+            messageData.setMessage(text);
             messageData.setDateTime(format.format(System.currentTimeMillis()));
             adapter.addToStart(messageData, true);
-           // adapter.addToStart(null, true);
-            sendText(input.toString());
+            adapter.scrollPosition(0);
+            sendText(text);
             return true;
         }
         else
@@ -349,6 +350,7 @@ public class ChatBotActivity extends AppCompatActivity implements
     private void sendText(final String text)
     {
         Log.d("WATSON_RESPONSE","API CALLING");
+
         JSONObject object=new JSONObject();
         try
         {
@@ -414,7 +416,9 @@ public class ChatBotActivity extends AppCompatActivity implements
             JSONObject context=res.getJSONObject("context");
             BotResponse response= gson.fromJson(result, BotResponse.class);
             adapter.removeDots();
+            boolean flag=true;
             //if(response.getOutput()!=null && response.getOutput().getText()!=null )
+            int count=0;
             if(response.getOutput()!=null && response.getOutput().getChatResponses()!=null )
             {
                 //for(int i=0; i<response.getOutput().getText().size();i++)
@@ -429,7 +433,9 @@ public class ChatBotActivity extends AppCompatActivity implements
                             messageData.setMessageType(MessageData.TYPE_TEXT);
                             messageData.setMessage(response.getOutput().getChatResponses().get(i).getText().get(j));
                             messageData.setDateTime(format.format(System.currentTimeMillis()));
-                            adapter.addToStart(messageData,true);
+                            adapter.addToStart(messageData,flag);
+                            count++;
+                            flag=false;
                         }
                     }
                     String s= response.getOutput().getChatResponses().get(i).getType();
@@ -449,12 +455,15 @@ public class ChatBotActivity extends AppCompatActivity implements
                             messageData.setMessage(piList.get(j).getProd_decs());
                             messageData.setMessageType(MessageData.TYPE_PRODUCT);
                             messageData.setDateTime(format.format(System.currentTimeMillis()));
-                            adapter.addToStart(messageData,true);
+                            adapter.addToStart(messageData,flag);
+                            count++;
+                            flag=false;
                         }
                     }
                 }
             }
-
+            if(count!=0)
+                adapter.scrollPosition(count-1);
             return context;
         }
         catch (Exception ex)

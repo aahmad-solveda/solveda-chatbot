@@ -231,9 +231,13 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
             }
         }
 
-        if (layoutManager != null && scroll) {
+       /* if (layoutManager != null && scroll) {
             layoutManager.scrollToPosition(0);
-        }
+        }*/
+    }
+    public void scrollPosition(int pos)
+    {
+        layoutManager.scrollToPosition(pos);
     }
     public void removeDots()
     {

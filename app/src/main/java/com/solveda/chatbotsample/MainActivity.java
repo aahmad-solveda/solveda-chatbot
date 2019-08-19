@@ -45,7 +45,7 @@ public class MainActivity extends ChatBotActivity {
         this.messagesList = (MessagesList) findViewById(R.id.messagesList);
         this.input = (MessageInput) findViewById(R.id.input);
         this.btnScrollToEnd = (FloatingActionButton)findViewById(R.id.btnScrollToEnd);
-        init("http://192.168.1.2:8094/api/message");
+        init("http://192.168.1.3:8094/api/message");
         //init("http://ayurvedabot.eu-gb.mybluemix.net/api/message");
         findViewById(R.id.errorView).setVisibility(View.GONE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -57,15 +57,6 @@ public class MainActivity extends ChatBotActivity {
             input.setVisibility(View.GONE);
 
         }
-
-       /* FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
     @Override
