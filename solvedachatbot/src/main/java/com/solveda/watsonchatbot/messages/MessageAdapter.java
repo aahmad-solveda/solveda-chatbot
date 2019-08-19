@@ -682,7 +682,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                         0,
                         0
                 );
-                image.setOnClickListener(new View.OnClickListener() {
+                /*image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(itemClick!=null)
@@ -690,7 +690,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                             itemClick.onImage(v.getTag().toString());
                         }
                     }
-                });
+                });*/
             }
             if(bubble!=null)
             {
