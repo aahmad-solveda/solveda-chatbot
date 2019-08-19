@@ -4,16 +4,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.solveda.watsonchatbot.ChatBotActivity;
 import com.solveda.watsonchatbot.messages.MessageData;
 import com.solveda.watsonchatbot.messages.MessageInput;
@@ -44,8 +42,8 @@ public class MainActivity extends ChatBotActivity {
 
         this.messagesList = (MessagesList) findViewById(R.id.messagesList);
         this.input = (MessageInput) findViewById(R.id.input);
-        this.btnScrollToEnd = (FloatingActionButton)findViewById(R.id.btnScrollToEnd);
-        init("http://192.168.1.2:8094/api/message");
+        this.btnScrollToEnd = (FloatingActionButton) findViewById(R.id.btnScrollToEnd);
+        init("http://192.168.1.3:8094/api/message");
         //init("http://ayurvedabot.eu-gb.mybluemix.net/api/message");
         findViewById(R.id.errorView).setVisibility(View.GONE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -71,7 +69,7 @@ public class MainActivity extends ChatBotActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+       // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

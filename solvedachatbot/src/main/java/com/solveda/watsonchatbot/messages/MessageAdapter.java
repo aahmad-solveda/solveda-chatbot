@@ -1,9 +1,6 @@
 package com.solveda.watsonchatbot.messages;
 
-import android.support.annotation.NonNull;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.RecyclerView;
+
 import android.text.Html;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
@@ -15,6 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -678,7 +680,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                         0,
                         0
                 );
-                image.setOnClickListener(new View.OnClickListener() {
+               /* image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(itemClick!=null)
@@ -686,7 +688,7 @@ public class MessageAdapter<MESSAGE extends IMessageData> extends RecyclerView.A
                             itemClick.onImage(v.getTag().toString());
                         }
                     }
-                });
+                });*/
             }
             if(bubble!=null)
             {

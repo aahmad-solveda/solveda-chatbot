@@ -8,11 +8,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.solveda.watsonchatbot.R;
 

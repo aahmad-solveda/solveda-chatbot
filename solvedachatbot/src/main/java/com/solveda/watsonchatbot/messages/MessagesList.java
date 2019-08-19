@@ -17,13 +17,14 @@
 package com.solveda.watsonchatbot.messages;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.solveda.watsonchatbot.commons.models.IMessage;
 
@@ -62,8 +63,9 @@ public class MessagesList extends RecyclerView {
         SimpleItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setSupportsChangeAnimations(false);
 
-        layoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, reverseLayout);
+       // layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, reverseLayout);
+
+        layoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,reverseLayout);
 
         setItemAnimator(itemAnimator);
         setLayoutManager(layoutManager);
@@ -71,6 +73,7 @@ public class MessagesList extends RecyclerView {
         adapter.setStyle(messagesListStyle);
 
         addOnScrollListener(new RecyclerScrollMoreListener(layoutManager, adapter));
+
         super.setAdapter(adapter);
     }
 
